@@ -1,0 +1,12 @@
+# Installed dependencies
+node_modules/
+
+# Generated production files
+dist/
+
+# Local environment settings
+.env
+.env.local
+
+# Operating system files
+.DS_Store
