@@ -1,43 +1,30 @@
-# NORTHMEN — The Viking Age
+# NORTHMEN: The Viking Age
 
-A modular digital implementation of a strategic Viking Age board game.
+A 3–5 player strategy game inspired by the Viking world. Clans compete through settlement, trade, exploration, warfare, diplomacy and three endgame paths: Christianisation, Crusade and Ragnarök.
 
-## Status
-Milestone 1 — Foundation. This is a clean technical starter, not yet a playable game.
+## Project status
+- Design clusters 1–16 have been worked through.
+- A TypeScript, React and Vite starter project exists.
+- The full game is not yet implemented.
+- The consolidated rules baseline is in `docs/MASTER_GAME_SPECIFICATION.md`.
 
-## Requirements
-- Node.js 20+
-- npm
-- Git
+## Documentation
+- `docs/MASTER_GAME_SPECIFICATION.md` — consolidated rules and product requirements.
+- `docs/DECISIONS.md` — confirmed decisions and open questions.
+- `docs/ARCHITECTURE.md` — intended software architecture.
+- `docs/DEVELOPMENT_ROADMAP.md` — staged implementation plan.
 
-## Run locally
-```bash
-npm install
-npm run dev
-```
+## Governance
+**Confirmed** means explicitly agreed. **Provisional** means the direction is agreed but values/details need testing. **Open** means undecided. **Recommendation** means proposed but not approved.
 
-## Checks
-```bash
-npm test
-npm run build
-```
+Never silently convert a recommendation or open item into a game rule.
 
-## Branch workflow
-`main` stays stable. Create one focused branch per feature:
-```bash
-git switch main
-git pull
-git switch -c feature/game-domain-model
-```
-After changes:
-```bash
-npm test
-npm run build
-git add .
-git commit -m "feat: add initial game domain model"
-git push -u origin feature/game-domain-model
-```
-Open a Pull Request. Merge only after review and passing checks.
-
-## Architecture rule
-Game rules must not depend on React or the browser. The engine is plain TypeScript; React displays state and sends commands. Never put rule calculations inside UI click handlers.
+## Development principles
+1. The game engine is the authoritative source of truth.
+2. Keep game rules independent of the React interface.
+3. Validate every command in the engine.
+4. Record state-changing actions in a chronological history.
+5. Test rules and edge cases automatically.
+6. Build a playable vertical slice early.
+7. Design for AI and online multiplayer.
+8. Inspect the existing repository before changing its structure or adding dependencies.
