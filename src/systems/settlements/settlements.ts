@@ -260,3 +260,107 @@ if (!cost) {
     ],
   };
 }
+
+
+/**
+ * Upgrades an existing settlement by one development level.
+ *
+ * Requires:
+ * - The settlement belongs to the player.
+ * - The settlement is below Town level.
+ * - Sufficient regional resources.
+ *
+ * Returns a new GameState without modifying the original.
+ */
+export function upgradeSettlement(
+  state: GameState,
+  playerId: PlayerId,
+  settlementId: string
+): GameState {
+  const settlement = state.settlements.find(
+    (item) => item.id === settlementId
+  );
+
+  if (!settlement || settlement.ownerId !== playerId) {
+    return state;
+  }
+
+  const nextLevel = getNextSettlementLevel(settlement.level);
+
+  if (nextLevel === null) {
+    return state;
+  }
+
+  const territory = state.territories.find(
+    (item) => item.id === settlement.territoryId
+  );
+
+  if (!territory) {
+    return state;
+  }
+
+  const region = state.regions.find(
+    (item) => item.id === territory.regionId
+  );
+
+  if (!region) {
+    return state;
+  }
+
+  const totalDevelopment = calculateTotalSettlementDevelopment(
+    state.settlements
+      .filter((item) => item.ownerId === playerId)
+      .map((item) => item.level)
+  );
+
+  const cost = calculateSettlementUpgradeCost(
+    settlement.level,
+    totalDevelopment
+  );
+
+  if (cost === null) {
+    return state;
+  }
+
+  const inventory = region.storage[playerId];
+
+  if (
+    !inventory ||
+    inventory.timber < cost.timber ||
+    inventory.iron < cost.iron ||
+    inventory.provisions < cost.provisions ||
+    inventory.silver < cost.silver
+  ) {
+    return state;
+  }
+
+  return {
+    ...state,
+    regions: state.regions.map((item) =>
+      item.id === region.id
+        ? {
+            ...item,
+            storage: {
+              ...item.storage,
+              [playerId]: {
+                ...inventory,
+                timber: inventory.timber - cost.timber,
+                iron: inventory.iron - cost.iron,
+                provisions: inventory.provisions - cost.provisions,
+                silver: inventory.silver - cost.silver,
+              },
+            },
+          }
+        : item
+    ),
+    settlements: state.settlements.map((item) =>
+      item.id === settlementId
+        ? {
+            ...item,
+            level: nextLevel,
+          }
+        : item
+    ),
+  };
+}
+

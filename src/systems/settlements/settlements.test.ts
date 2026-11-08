@@ -9,6 +9,7 @@ import {
   calculateSettlementUpgradeCost,
   canConstructOutpost,
   constructOutpost,
+  upgradeSettlement,
 } from "./settlements";
 
 import { createEmptyGameState } from "../../engine/initialState";
@@ -64,6 +65,23 @@ function createConstructionTestState() {
 
   return state;
 }
+
+function createUpgradeTestState() {
+  const state = createConstructionTestState();
+
+  state.settlements = [
+    {
+      id: "settlement-1",
+      ownerId: "player-1",
+      territoryId: "territory-1",
+      level: "outpost",
+      isMainSettlement: false,
+    },
+  ];
+
+  return state;
+}
+
 
 describe("settlement development", () => {
   it("defines the four settlement levels in the correct order", () => {
@@ -228,3 +246,40 @@ describe("settlement upgrade costs", () => {
     ).toBe(false);
   });
 });
+describe("settlement upgrades", () => {
+  it("upgrades an Outpost to a Village", () => {
+    const state = createUpgradeTestState();
+    const updatedState = upgradeSettlement(
+      state,
+      "player-1",
+      "settlement-1"
+    );
+
+    expect(updatedState.settlements[0].level).toBe("village");
+  });
+
+  it("does not upgrade a settlement owned by another player", () => {
+    const state = createUpgradeTestState();
+    const updatedState = upgradeSettlement(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState).toBe(state);
+  });
+
+  it("does not upgrade a Town further", () => {
+    const state = createUpgradeTestState();
+    state.settlements[0].level = "town";
+
+    const updatedState = upgradeSettlement(
+      state,
+      "player-1",
+      "settlement-1"
+    );
+
+    expect(updatedState).toBe(state);
+  });
+});
+
