@@ -52,11 +52,12 @@ it("creates empty geographical, military and settlement collections", () => {
   expect(state.settlements).toEqual([]);
   expect(state.ports).toEqual([]);
 });
-it("initializes the Settlement Event Card deck and discard pile as empty", () => {
+it("initializes a shuffled Settlement Event Card deck", () => {
   const state = createEmptyGameState(["A", "B", "C"]);
 
-  expect(state.settlementEventDeck).toEqual([]);
-  expect(state.settlementEventDiscard).toEqual([]);
+expect(state.settlementEventDeck).toHaveLength(30);
+expect(state.settlementEventDiscard).toEqual([]);
+expect(state.activeSettlementEvent).toBeNull();
 });
 
 it("initializes with no active Settlement Event Card", () => {

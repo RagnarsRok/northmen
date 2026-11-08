@@ -1,5 +1,5 @@
-
 import type { GameState, SettlementEventCard } from "../../engine/types";
+import { captureSettlement } from "./settlements";
 
 /**
  * Creates the 30 Settlement Event Cards.
@@ -93,4 +93,55 @@ export function resolveSettlementEventCard(
     ],
     activeSettlementEvent: null,
   };
+}
+
+/**
+ * Captures a settlement and draws a Settlement Event Card
+ * if the captured settlement is a Village, Trading Post or Town.
+ */
+export function captureSettlementWithEvent(
+  state: GameState,
+  newOwnerId: string,
+  settlementId: string,
+  replacementMainSettlementId?: string
+): GameState {
+  const settlement = state.settlements.find(
+    (item) => item.id === settlementId
+  );
+
+  // No event if the settlement does not exist.
+  if (!settlement) {
+    return state;
+  }
+
+  const qualifiesForEvent = settlement.level !== "outpost";
+
+  // Perform the actual capture.
+  const capturedState = captureSettlement(
+    state,
+    newOwnerId,
+    settlementId,
+    replacementMainSettlementId
+  );
+
+  // Check that ownership actually changed.
+  const capturedSettlement = capturedState.settlements.find(
+    (item) => item.id === settlementId
+  );
+
+  if (
+    !capturedSettlement ||
+    capturedSettlement.ownerId !== newOwnerId ||
+    capturedState === state
+  ) {
+    return state;
+  }
+
+  // Outpost captures do not trigger Settlement Event Cards.
+  if (!qualifiesForEvent) {
+    return capturedState;
+  }
+
+  // Draw one card for qualifying settlement captures.
+  return drawSettlementEventCard(capturedState);
 }

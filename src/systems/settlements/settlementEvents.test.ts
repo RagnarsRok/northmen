@@ -6,7 +6,58 @@ import {
   shuffleSettlementEventCards,
   drawSettlementEventCard,
   resolveSettlementEventCard,
+  captureSettlementWithEvent,
 } from "./settlementEvents";
+
+function createCaptureTestState(
+  level: "outpost" | "village" | "trading-post" | "town"
+) {
+  const state = createEmptyGameState(["A", "B", "C"]);
+
+  state.regions = [
+    {
+      id: "region-1",
+      name: "Test Region",
+      territoryIds: ["territory-1"],
+      storage: {
+        "player-1": {
+          timber: 0, iron: 0, provisions: 0, fish: 0, silver: 0,
+        },
+        "player-2": {
+          timber: 0, iron: 0, provisions: 0, fish: 0, silver: 0,
+        },
+        "player-3": {
+          timber: 0, iron: 0, provisions: 0, fish: 0, silver: 0,
+        },
+      },
+    },
+  ];
+
+  state.territories = [
+    {
+      id: "territory-1",
+      name: "Test Territory",
+      regionId: "region-1",
+      terrain: "forest",
+      primaryResource: "timber",
+      secondaryResource: "iron",
+      connections: [],
+      ownerId: "player-1",
+    },
+  ];
+
+  state.settlements = [
+    {
+      id: "settlement-1",
+      ownerId: "player-1",
+      territoryId: "territory-1",
+      level,
+      isMainSettlement: false,
+    },
+  ];
+
+  return state;
+}
 
 describe("Settlement Event Cards", () => {
   it("creates exactly 30 Settlement Event Cards", () => {
@@ -19,6 +70,60 @@ describe("Settlement Event Cards", () => {
     const ids = cards.map((card) => card.id);
     expect(new Set(ids).size).toBe(30);
   });
+
+    it("does not draw an event card when capturing an Outpost", () => {
+    const state = createCaptureTestState("outpost");
+
+    const updatedState = captureSettlementWithEvent(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.settlements[0].ownerId).toBe("player-2");
+    expect(updatedState.activeSettlementEvent).toBeNull();
+    expect(updatedState.settlementEventDeck).toHaveLength(30);
+  });
+
+  it("draws an event card when capturing a Village", () => {
+    const state = createCaptureTestState("village");
+
+    const updatedState = captureSettlementWithEvent(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.settlements[0].ownerId).toBe("player-2");
+    expect(updatedState.activeSettlementEvent).not.toBeNull();
+    expect(updatedState.settlementEventDeck).toHaveLength(29);
+  });
+
+  it("draws an event card when capturing a Trading Post", () => {
+    const state = createCaptureTestState("trading-post");
+
+    const updatedState = captureSettlementWithEvent(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.activeSettlementEvent).not.toBeNull();
+    expect(updatedState.settlementEventDeck).toHaveLength(29);
+  });
+
+  it("draws an event card when capturing a Town", () => {
+    const state = createCaptureTestState("town");
+
+    const updatedState = captureSettlementWithEvent(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.activeSettlementEvent).not.toBeNull();
+    expect(updatedState.settlementEventDeck).toHaveLength(29);
+});
 
   it("creates placeholder cards with names and descriptions", () => {
     const cards = createSettlementEventCards();
@@ -79,6 +184,7 @@ describe("Settlement Event Cards", () => {
 
   it("returns unchanged state when both piles are empty", () => {
     const state = createEmptyGameState(["A", "B", "C"]);
+    state.settlementEventDeck = [];
     const updatedState = drawSettlementEventCard(state);
 
     expect(updatedState).toBe(state);

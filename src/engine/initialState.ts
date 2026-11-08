@@ -4,6 +4,11 @@ import type {
   ResourceInventory,
 } from "./types";
 
+import {
+  createSettlementEventCards,
+  shuffleSettlementEventCards,
+} from "../systems/settlements/settlementEvents";
+
 export const STARTING_RESOURCES: ResourceInventory = {
   timber: 2,
   iron: 1,
@@ -51,8 +56,10 @@ return {
   longboats: [],
   settlements: [],
   ports: [],
-  settlementEventDeck: [],
-  settlementEventDiscard: [],
-  activeSettlementEvent: null,
+settlementEventDeck: shuffleSettlementEventCards(
+  createSettlementEventCards()
+),
+settlementEventDiscard: [],
+activeSettlementEvent: null,
 };
 }
