@@ -364,3 +364,107 @@ export function upgradeSettlement(
   };
 }
 
+/**
+ * Transfers a captured settlement to another player.
+ *
+ * The settlement keeps its current development level.
+ * Returns a new GameState without modifying the original.
+ */
+
+/**
+ * Transfers a captured settlement to another player.
+ *
+ * The settlement keeps its current development level.
+ * The attacker receives main-settlement status only if they
+ * do not already have a main settlement.
+ *
+ * If the captured settlement was the defender's main settlement,
+ * the defender may nominate one of their remaining Outposts
+ * as their replacement main settlement.
+ *
+ * Returns a new GameState without modifying the original.
+ */
+export function captureSettlement(
+  state: GameState,
+  newOwnerId: PlayerId,
+  settlementId: string,
+  replacementMainSettlementId?: string
+): GameState {
+  const settlement = state.settlements.find(
+    (item) => item.id === settlementId
+  );
+
+  if (!settlement || settlement.ownerId === newOwnerId) {
+    return state;
+  }
+
+  const territory = state.territories.find(
+    (item) => item.id === settlement.territoryId
+  );
+
+  if (!territory) {
+    return state;
+  }
+
+  const previousOwnerId = settlement.ownerId;
+  const previousOwnerLostMain = settlement.isMainSettlement;
+
+  const attackerAlreadyHasMain = state.settlements.some(
+    (item) =>
+      item.ownerId === newOwnerId &&
+      item.isMainSettlement
+  );
+
+  // Validate the defender's chosen replacement, if provided.
+  if (replacementMainSettlementId) {
+    const replacement = state.settlements.find(
+      (item) => item.id === replacementMainSettlementId
+    );
+
+    if (
+      !previousOwnerLostMain ||
+      !replacement ||
+      replacement.ownerId !== previousOwnerId ||
+      replacement.level !== "outpost" ||
+      replacement.id === settlementId
+    ) {
+      return state;
+    }
+  }
+
+  return {
+    ...state,
+
+    territories: state.territories.map((item) =>
+      item.id === territory.id
+        ? { ...item, ownerId: newOwnerId }
+        : item
+    ),
+
+    settlements: state.settlements.map((item) => {
+      // Transfer the captured settlement.
+      if (item.id === settlementId) {
+        return {
+          ...item,
+          ownerId: newOwnerId,
+          isMainSettlement: !attackerAlreadyHasMain,
+        };
+      }
+
+      // Promote the defender's chosen replacement Outpost.
+      if (
+        replacementMainSettlementId &&
+        item.id === replacementMainSettlementId
+      ) {
+        return {
+          ...item,
+          isMainSettlement: true,
+        };
+      }
+
+      return item;
+    }),
+  };
+}
+
+

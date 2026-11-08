@@ -10,6 +10,7 @@ import {
   canConstructOutpost,
   constructOutpost,
   upgradeSettlement,
+  captureSettlement,
 } from "./settlements";
 
 import { createEmptyGameState } from "../../engine/initialState";
@@ -283,3 +284,105 @@ describe("settlement upgrades", () => {
   });
 });
 
+describe("settlement capture", () => {
+  it("transfers a settlement to another player", () => {
+    const state = createUpgradeTestState();
+
+    const updatedState = captureSettlement(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.settlements[0].ownerId).toBe("player-2");
+    expect(updatedState.territories[0].ownerId).toBe("player-2");
+  });
+
+  it("preserves the settlement development level", () => {
+    const state = createUpgradeTestState();
+    state.settlements[0].level = "trading-post";
+
+    const updatedState = captureSettlement(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.settlements[0].level).toBe("trading-post");
+  });
+
+  it("does not modify the original game state", () => {
+    const state = createUpgradeTestState();
+
+    const updatedState = captureSettlement(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(state.settlements[0].ownerId).toBe("player-1");
+    expect(state.territories[0].ownerId).toBe("player-1");
+    expect(updatedState).not.toBe(state);
+  });
+});
+
+
+  it("makes the captured settlement the attacker's main settlement if they have none", () => {
+    const state = createUpgradeTestState();
+
+    const updatedState = captureSettlement(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.settlements[0].ownerId).toBe("player-2");
+    expect(updatedState.settlements[0].isMainSettlement).toBe(true);
+  });
+
+  it("keeps the captured settlement as an ordinary settlement if the attacker already has a main settlement", () => {
+    const state = createUpgradeTestState();
+
+    state.settlements.push({
+      id: "settlement-2",
+      ownerId: "player-2",
+      territoryId: "territory-1",
+      level: "outpost",
+      isMainSettlement: true,
+    });
+
+    const updatedState = captureSettlement(
+      state,
+      "player-2",
+      "settlement-1"
+    );
+
+    expect(updatedState.settlements[0].isMainSettlement).toBe(false);
+    expect(updatedState.settlements[1].isMainSettlement).toBe(true);
+  });
+
+  it("allows the defender to choose a replacement main settlement", () => {
+    const state = createUpgradeTestState();
+
+    state.settlements[0].isMainSettlement = true;
+
+    state.settlements.push({
+      id: "settlement-2",
+      ownerId: "player-1",
+      territoryId: "territory-1",
+      level: "outpost",
+      isMainSettlement: false,
+    });
+
+    const updatedState = captureSettlement(
+      state,
+      "player-2",
+      "settlement-1",
+      "settlement-2"
+    );
+
+    expect(updatedState.settlements[0].ownerId).toBe("player-2");
+    expect(updatedState.settlements[0].isMainSettlement).toBe(true);
+    expect(updatedState.settlements[1].ownerId).toBe("player-1");
+    expect(updatedState.settlements[1].isMainSettlement).toBe(true);
+  });
