@@ -88,6 +88,32 @@ export interface Longboat {
   location: "at-port" | "at-sea";
 }
 
+// Development levels for settlements.
+export type SettlementLevel =
+  | "outpost"
+  | "village"
+  | "trading-post"
+  | "town";
+
+export type SettlementId = string;
+export type PortId = string;
+
+// A clan-owned settlement located in a territory.
+export interface Settlement {
+  id: SettlementId;
+  ownerId: PlayerId;
+  territoryId: TerritoryId;
+  level: SettlementLevel;
+  isMainSettlement: boolean;
+}
+
+// A port is independently owned and located in a territory.
+export interface Port {
+  id: PortId;
+  ownerId: PlayerId;
+  territoryId: TerritoryId;
+}
+
 
 // The central state of the entire game.
 export interface GameState {
@@ -99,4 +125,6 @@ export interface GameState {
   territories: Territory[];
   armies: Army[];
   longboats: Longboat[];
+  settlements: Settlement[];
+  ports: Port[];
 }

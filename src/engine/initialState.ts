@@ -49,5 +49,7 @@ return {
   territories: [],
   armies: [],
   longboats: [],
+  settlements: [],
+  ports: [],
 };
 }
