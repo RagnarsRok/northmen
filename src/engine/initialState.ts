@@ -51,5 +51,8 @@ return {
   longboats: [],
   settlements: [],
   ports: [],
+  settlementEventDeck: [],
+  settlementEventDiscard: [],
+  activeSettlementEvent: null,
 };
 }

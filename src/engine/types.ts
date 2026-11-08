@@ -39,6 +39,14 @@ export type ReligionStatus = "pagan" | "christian";
 
 export type BonusCardId = string;
 export type ObjectiveCardId = string;
+export type SettlementEventCardId = string;
+
+// A card drawn when a qualifying settlement is captured.
+export interface SettlementEventCard {
+  id: SettlementEventCardId;
+  name: string;
+  description: string;
+}
 
 export interface Player {
   id: PlayerId;
@@ -127,4 +135,7 @@ export interface GameState {
   longboats: Longboat[];
   settlements: Settlement[];
   ports: Port[];
+  settlementEventDeck: SettlementEventCard[];
+  settlementEventDiscard: SettlementEventCard[];
+  activeSettlementEvent: SettlementEventCard | null;
 }

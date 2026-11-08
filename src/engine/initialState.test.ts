@@ -52,4 +52,17 @@ it("creates empty geographical, military and settlement collections", () => {
   expect(state.settlements).toEqual([]);
   expect(state.ports).toEqual([]);
 });
+it("initializes the Settlement Event Card deck and discard pile as empty", () => {
+  const state = createEmptyGameState(["A", "B", "C"]);
+
+  expect(state.settlementEventDeck).toEqual([]);
+  expect(state.settlementEventDiscard).toEqual([]);
+});
+
+it("initializes with no active Settlement Event Card", () => {
+  const state = createEmptyGameState(["A", "B", "C"]);
+
+  expect(state.activeSettlementEvent).toBeNull();
+});
+
 });
