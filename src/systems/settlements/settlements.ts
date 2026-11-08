@@ -87,3 +87,61 @@ export function canConstructOutpost(
       army.warriorCount >= 1
   );
 }
+
+/**
+ * Calculates the resource costs for upgrading a settlement.
+ *
+ * Costs are based on:
+ * - The next settlement development level.
+ * - The player's total settlement development.
+ *
+ * Silver is required from Trading Post upgrades onwards.
+ */
+export function calculateSettlementUpgradeCost(
+  currentLevel: SettlementLevel,
+  totalDevelopment: number
+): SettlementCost | null {
+  const nextLevel = getNextSettlementLevel(currentLevel);
+
+  if (nextLevel === null) {
+    return null;
+  }
+
+  const developmentMultiplier = Math.max(1, totalDevelopment);
+
+  const baseCosts: Record<SettlementLevel, SettlementCost> = {
+    outpost: {
+      timber: 2,
+      iron: 0,
+      provisions: 1,
+      silver: 0,
+    },
+    village: {
+      timber: 3,
+      iron: 1,
+      provisions: 2,
+      silver: 0,
+    },
+    "trading-post": {
+      timber: 4,
+      iron: 2,
+      provisions: 2,
+      silver: 2,
+    },
+    town: {
+      timber: 5,
+      iron: 3,
+      provisions: 3,
+      silver: 4,
+    },
+  };
+
+  const baseCost = baseCosts[nextLevel];
+
+  return {
+    timber: baseCost.timber * developmentMultiplier,
+    iron: baseCost.iron * developmentMultiplier,
+    provisions: baseCost.provisions * developmentMultiplier,
+    silver: baseCost.silver * developmentMultiplier,
+  };
+}

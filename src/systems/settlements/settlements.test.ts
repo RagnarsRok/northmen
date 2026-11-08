@@ -6,6 +6,7 @@ import {
   getNextSettlementLevel,
   canUpgradeSettlement,
   calculateTotalSettlementDevelopment,
+  calculateSettlementUpgradeCost,
 } from "./settlements";
 
 describe("settlement development", () => {
@@ -61,4 +62,37 @@ it("calculates total settlement development", () => {
     ])
   ).toBe(10);
 });
+
+describe("settlement upgrade costs", () => {
+  it("calculates the cost of upgrading an Outpost", () => {
+    expect(calculateSettlementUpgradeCost("outpost", 1)).toEqual({
+      timber: 3,
+      iron: 1,
+      provisions: 2,
+      silver: 0,
+    });
+  });
+
+  it("requires Silver when upgrading to a Trading Post", () => {
+    expect(calculateSettlementUpgradeCost("village", 2)).toEqual({
+      timber: 8,
+      iron: 4,
+      provisions: 4,
+      silver: 4,
+    });
+  });
+
+  it("increases costs with total settlement development", () => {
+    expect(calculateSettlementUpgradeCost("outpost", 4)).toEqual({
+      timber: 12,
+      iron: 4,
+      provisions: 8,
+      silver: 0,
+    });
+  });
+
+  it("does not allow upgrading a Town", () => {
+    expect(calculateSettlementUpgradeCost("town", 4)).toBeNull();
+  });
 });
+  });
