@@ -2,6 +2,8 @@
 export type PlayerId = string;
 export type RegionId = string;
 export type TerritoryId = string;
+export type ArmyId = string;
+export type LongboatId = string;
 
 export type ResourceType =
   | "timber"
@@ -70,6 +72,22 @@ export interface Territory {
   connections: TerritoryConnection[];
   ownerId?: PlayerId;
 }
+// A clan's warriors grouped together in one territory.
+export interface Army {
+  id: ArmyId;
+  ownerId: PlayerId;
+  territoryId: TerritoryId;
+  warriorCount: number;
+}
+
+// A clan-owned ship used to transport warriors.
+export interface Longboat {
+  id: LongboatId;
+  ownerId: PlayerId;
+  territoryId: TerritoryId;
+  location: "at-port" | "at-sea";
+}
+
 
 // The central state of the entire game.
 export interface GameState {
@@ -79,4 +97,6 @@ export interface GameState {
   players: Player[];
   regions: Region[];
   territories: Territory[];
+  armies: Army[];
+  longboats: Longboat[];
 }

@@ -42,10 +42,12 @@ describe("createEmptyGameState", () => {
     expect(state.players[1].bonusCardIds).toEqual([]);
   });
 
-  it("creates empty geographical collections", () => {
-    const state = createEmptyGameState(["A", "B", "C"]);
+it("creates empty geographical and military collections", () => {
+  const state = createEmptyGameState(["A", "B", "C"]);
 
-    expect(state.regions).toEqual([]);
-    expect(state.territories).toEqual([]);
-  });
+  expect(state.regions).toEqual([]);
+  expect(state.territories).toEqual([]);
+  expect(state.armies).toEqual([]);
+  expect(state.longboats).toEqual([]);
+});
 });

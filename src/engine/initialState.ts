@@ -40,12 +40,14 @@ const players = playerNames.map((name, i) => ({
   objectiveCardIds: [],
 }));
 
-  return {
-    version: 1,
-    round: 1,
-    activePlayerIndex: 0,
-    players,
-    regions: [],
-    territories: [],
-  };
+return {
+  version: 1,
+  round: 1,
+  activePlayerIndex: 0,
+  players,
+  regions: [],
+  territories: [],
+  armies: [],
+  longboats: [],
+};
 }
