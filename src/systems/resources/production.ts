@@ -1,12 +1,5 @@
 
-import type {
-  GameState,
-  ResourceType,
-} from "../../engine/types";
-import {
-  addResource,
-  createEmptyResourceInventory,
-} from "./resourceInventory";
+import type { GameState, ResourceType } from "../../engine/types";
 
 export interface ProductionResult {
   playerId: string;
@@ -17,9 +10,8 @@ export interface ProductionResult {
 }
 
 /**
- * Calculates automatic primary resource production.
- *
- * Each territory produces one unit of its primary resource.
+ * Calculates automatic primary production.
+ * Each owned territory produces one unit of its primary resource.
  * Silver is excluded from territorial production.
  */
 export function calculatePrimaryProduction(
@@ -29,7 +21,6 @@ export function calculatePrimaryProduction(
 
   for (const territory of state.territories) {
     if (!territory.ownerId) continue;
-
     if (territory.primaryResource === "silver") continue;
 
     results.push({
@@ -46,9 +37,7 @@ export function calculatePrimaryProduction(
 
 /**
  * Calculates secondary production for a gathering action.
- *
- * Each eligible territory produces one unit of its
- * secondary resource when its owner gathers there.
+ * Each eligible owned territory produces one unit.
  */
 export function calculateSecondaryProduction(
   state: GameState,
@@ -63,7 +52,6 @@ export function calculateSecondaryProduction(
     );
 
     if (!territory || territory.ownerId !== playerId) continue;
-
     if (territory.secondaryResource === "silver") continue;
 
     results.push({
@@ -85,58 +73,60 @@ export function calculateSecondaryProduction(
 export function calculatePortProduction(
   state: GameState
 ): ProductionResult[] {
-  return state.ports.map((port) => ({
-    playerId: port.ownerId,
-    regionId: state.territories.find(
-      (territory) => territory.id === port.territoryId
-    )?.regionId ?? "",
-    resource: "fish" as const,
-    amount: 1,
-    source: "port" as const,
-  }));
+  return state.ports
+    .map((port): ProductionResult => {
+      const territory = state.territories.find(
+        (item) => item.id === port.territoryId
+      );
+
+      return {
+        playerId: port.ownerId,
+        regionId: territory?.regionId ?? "",
+        resource: "fish",
+        amount: 1,
+        source: "port",
+      };
+    })
+    .filter((result) => result.regionId !== "");
 }
 
 /**
- * Applies automatic resource production for the current round.
+ * Applies production results to regional storage.
  *
- * Includes:
- * - Primary territorial production
- * - Fish production from owned ports
- *
- * Secondary production is handled separately through gathering.
+ * Returns a new GameState without modifying the original.
  */
-export function applyAutomaticProduction(
-  state: GameState
+export function applyProductionResults(
+  state: GameState,
+  results: ProductionResult[]
 ): GameState {
-  const results = [
-    ...calculatePrimaryProduction(state),
-    ...calculatePortProduction(state),
-  ];
-
-  const regions = state.regions.map((region) => {
-    const storage = { ...region.storage };
-
-    for (const result of results) {
-      if (result.regionId !== region.id) continue;
-
-      const inventory =
-        storage[result.playerId] ?? createEmptyResourceInventory();
-
-      storage[result.playerId] = addResource(
-        inventory,
-        result.resource,
-        result.amount
-      );
-    }
-
-    return {
-      ...region,
-      storage,
-    };
-  });
-
   return {
     ...state,
-    regions,
+    regions: state.regions.map((region) => {
+      const regionResults = results.filter(
+        (result) => result.regionId === region.id
+      );
+
+      if (regionResults.length === 0) {
+        return region;
+      }
+
+      const updatedStorage = { ...region.storage };
+
+      for (const result of regionResults) {
+        const playerInventory = {
+          ...updatedStorage[result.playerId],
+        };
+
+        playerInventory[result.resource] =
+          (playerInventory[result.resource] ?? 0) + result.amount;
+
+        updatedStorage[result.playerId] = playerInventory;
+      }
+
+      return {
+        ...region,
+        storage: updatedStorage,
+      };
+    }),
   };
 }

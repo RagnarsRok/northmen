@@ -6,10 +6,25 @@ import {
   calculatePrimaryProduction,
   calculateSecondaryProduction,
   calculatePortProduction,
+  applyProductionResults,
 } from "./production";
 
 const testState: GameState = {
   ...createEmptyGameState(["Ragnar", "Player 2", "Player 3"]),
+  regions: [
+    {
+      id: "r1",
+      name: "Scandinavia",
+      territoryIds: ["t1", "t2"],
+      storage: {},
+    },
+    {
+      id: "r2",
+      name: "Iceland",
+      territoryIds: ["t3"],
+      storage: {},
+    },
+  ],
   territories: [
     {
       id: "t1",
@@ -94,4 +109,54 @@ describe("resource production", () => {
     expect(results.every((result) => result.resource === "fish")).toBe(true);
     expect(results.every((result) => result.amount === 1)).toBe(true);
   });
+
+  it("adds production to the correct regional storage", () => {
+    const results = [
+      {
+        playerId: "player-1",
+        regionId: "r1",
+        resource: "timber" as const,
+        amount: 1,
+        source: "primary" as const,
+      },
+    ];
+
+    const updated = applyProductionResults(testState, results);
+
+    expect(updated.regions[0].storage["player-1"].timber).toBe(1);
+  });
+
+  it("does not modify the original game state", () => {
+    const results = [
+      {
+        playerId: "player-1",
+        regionId: "r1",
+        resource: "timber" as const,
+        amount: 1,
+        source: "primary" as const,
+      },
+    ];
+
+    const updated = applyProductionResults(testState, results);
+
+    expect(testState.regions[0].storage["player-1"]).toBeUndefined();
+    expect(updated.regions[0].storage["player-1"].timber).toBe(1);
+  });
+
+  it("does not change storage in unrelated regions", () => {
+    const results = [
+      {
+        playerId: "player-1",
+        regionId: "r1",
+        resource: "timber" as const,
+        amount: 1,
+        source: "primary" as const,
+      },
+    ];
+
+    const updated = applyProductionResults(testState, results);
+
+    expect(updated.regions[1]).toEqual(testState.regions[1]);
+  });
+
 });
