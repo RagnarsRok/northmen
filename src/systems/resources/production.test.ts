@@ -1,3 +1,4 @@
+
 import { describe, expect, it } from "vitest";
 import type { GameState } from "../../engine/types";
 import { createEmptyGameState } from "../../engine/initialState";
@@ -83,15 +84,14 @@ describe("resource production", () => {
 
     expect(results).toHaveLength(1);
     expect(results[0].resource).toBe("iron");
+    expect(results[0].playerId).toBe("player-1");
   });
 
   it("produces one Fish per owned port", () => {
     const results = calculatePortProduction(testState);
 
     expect(results).toHaveLength(2);
-    expect(results.every((result) => result.resource === "fish"))
-      .toBe(true);
-    expect(results.every((result) => result.amount === 1))
-      .toBe(true);
+    expect(results.every((result) => result.resource === "fish")).toBe(true);
+    expect(results.every((result) => result.amount === 1)).toBe(true);
   });
 });

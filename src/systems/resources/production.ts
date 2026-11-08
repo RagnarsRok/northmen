@@ -3,6 +3,10 @@ import type {
   GameState,
   ResourceType,
 } from "../../engine/types";
+import {
+  addResource,
+  createEmptyResourceInventory,
+} from "./resourceInventory";
 
 export interface ProductionResult {
   playerId: string;
@@ -81,13 +85,58 @@ export function calculateSecondaryProduction(
 export function calculatePortProduction(
   state: GameState
 ): ProductionResult[] {
-return state.ports.map((port) => ({
-  playerId: port.ownerId,
-  regionId: state.territories.find(
-    (territory) => territory.id === port.territoryId
-  )?.regionId ?? "",
-  resource: "fish" as const,
-  amount: 1,
-  source: "port" as const,
-}));
+  return state.ports.map((port) => ({
+    playerId: port.ownerId,
+    regionId: state.territories.find(
+      (territory) => territory.id === port.territoryId
+    )?.regionId ?? "",
+    resource: "fish" as const,
+    amount: 1,
+    source: "port" as const,
+  }));
+}
+
+/**
+ * Applies automatic resource production for the current round.
+ *
+ * Includes:
+ * - Primary territorial production
+ * - Fish production from owned ports
+ *
+ * Secondary production is handled separately through gathering.
+ */
+export function applyAutomaticProduction(
+  state: GameState
+): GameState {
+  const results = [
+    ...calculatePrimaryProduction(state),
+    ...calculatePortProduction(state),
+  ];
+
+  const regions = state.regions.map((region) => {
+    const storage = { ...region.storage };
+
+    for (const result of results) {
+      if (result.regionId !== region.id) continue;
+
+      const inventory =
+        storage[result.playerId] ?? createEmptyResourceInventory();
+
+      storage[result.playerId] = addResource(
+        inventory,
+        result.resource,
+        result.amount
+      );
+    }
+
+    return {
+      ...region,
+      storage,
+    };
+  });
+
+  return {
+    ...state,
+    regions,
+  };
 }
