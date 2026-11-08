@@ -33,12 +33,22 @@ export interface TerritoryConnection {
   type: ConnectionType;
 }
 
+export type ReligionStatus = "pagan" | "christian";
+
+export type BonusCardId = string;
+export type ObjectiveCardId = string;
+
 export interface Player {
   id: PlayerId;
   name: string;
   clanName: string;
   color: string;
-  resources: ResourceInventory;
+
+  religion: ReligionStatus;
+  victoryPoints: number;
+
+  bonusCardIds: BonusCardId[];
+  objectiveCardIds: ObjectiveCardId[];
 }
 
 // A large geographical area containing multiple territories.

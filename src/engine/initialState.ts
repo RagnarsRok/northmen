@@ -29,13 +29,16 @@ export function createEmptyGameState(playerNames: string[]): GameState {
     "#4F8768",
   ];
 
-  const players = playerNames.map((name, i) => ({
-    id: `player-${i + 1}`,
-    name,
-    clanName: `Clan ${i + 1}`,
-    color: colors[i],
-    resources: { ...STARTING_RESOURCES },
-  }));
+const players = playerNames.map((name, i) => ({
+  id: `player-${i + 1}`,
+  name,
+  clanName: `Clan ${i + 1}`,
+  color: colors[i],
+  religion: "pagan" as const,
+  victoryPoints: 0,
+  bonusCardIds: [],
+  objectiveCardIds: [],
+}));
 
   return {
     version: 1,

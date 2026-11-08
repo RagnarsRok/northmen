@@ -1,9 +1,51 @@
+
 import { describe, expect, it } from "vitest";
 import { createEmptyGameState } from "./initialState";
+
 describe("createEmptyGameState", () => {
-  it("creates a 3-player state", () => { const s=createEmptyGameState(["A","B","C"]); expect(s.players).toHaveLength(3); expect(s.round).toBe(1); expect(s.players[0].resources.provisions).toBe(3); });
-  it("allows five players", () => { expect(createEmptyGameState(["A","B","C","D","E"]).players).toHaveLength(5); });
-  it("rejects fewer than three players", () => { expect(()=>createEmptyGameState(["A","B"])).toThrow("3 to 5 players"); });
-  it("rejects more than five players", () => { expect(()=>createEmptyGameState(["A","B","C","D","E","F"])).toThrow("3 to 5 players"); });
-  it("does not share inventory objects", () => { const s=createEmptyGameState(["A","B","C"]); s.players[0].resources.timber=99; expect(s.players[1].resources.timber).toBe(2); });
+  it("creates a 3-player state", () => {
+    const state = createEmptyGameState(["A", "B", "C"]);
+
+    expect(state.players).toHaveLength(3);
+    expect(state.round).toBe(1);
+    expect(state.players[0].religion).toBe("pagan");
+    expect(state.players[0].victoryPoints).toBe(0);
+  });
+
+  it("allows five players", () => {
+    const state = createEmptyGameState(["A", "B", "C", "D", "E"]);
+    expect(state.players).toHaveLength(5);
+  });
+
+  it("rejects fewer than three players", () => {
+    expect(() => createEmptyGameState(["A", "B"])).toThrow("3 to 5 players");
+  });
+
+  it("rejects more than five players", () => {
+    expect(() =>
+      createEmptyGameState(["A", "B", "C", "D", "E", "F"])
+    ).toThrow("3 to 5 players");
+  });
+
+  it("initializes cards as empty collections", () => {
+    const state = createEmptyGameState(["A", "B", "C"]);
+
+    expect(state.players[0].bonusCardIds).toEqual([]);
+    expect(state.players[0].objectiveCardIds).toEqual([]);
+  });
+
+  it("creates independent card collections for each player", () => {
+    const state = createEmptyGameState(["A", "B", "C"]);
+
+    state.players[0].bonusCardIds.push("bonus-1");
+
+    expect(state.players[1].bonusCardIds).toEqual([]);
+  });
+
+  it("creates empty geographical collections", () => {
+    const state = createEmptyGameState(["A", "B", "C"]);
+
+    expect(state.regions).toEqual([]);
+    expect(state.territories).toEqual([]);
+  });
 });
