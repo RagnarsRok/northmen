@@ -80,6 +80,22 @@ export function canConstructOutpost(
   playerId: PlayerId,
   territoryId: string
 ): boolean {
+  const territory = state.territories.find(
+    (item) => item.id === territoryId
+  );
+
+  if (!territory || territory.ownerId !== playerId) {
+    return false;
+  }
+
+  if (
+    state.settlements.some(
+      (settlement) => settlement.territoryId === territoryId
+    )
+  ) {
+    return false;
+  }
+
   return state.armies.some(
     (army) =>
       army.ownerId === playerId &&
@@ -143,5 +159,104 @@ export function calculateSettlementUpgradeCost(
     iron: baseCost.iron * developmentMultiplier,
     provisions: baseCost.provisions * developmentMultiplier,
     silver: baseCost.silver * developmentMultiplier,
+  };
+}
+
+/**
+ * Constructs a new Outpost.
+ *
+ * Requires:
+ * - At least one stationed warrior.
+ * - Sufficient regional resources.
+ * - No existing settlement in the territory.
+ *
+ * Returns a new GameState without modifying the original.
+ */
+export function constructOutpost(
+  state: GameState,
+  playerId: PlayerId,
+  territoryId: string,
+  settlementId: string
+): GameState {
+  const territory = state.territories.find(
+    (item) => item.id === territoryId
+  );
+
+  if (!territory || territory.ownerId !== playerId) {
+    return state;
+  }
+
+  if (state.settlements.some(
+    (settlement) => settlement.territoryId === territoryId
+  )) {
+    return state;
+  }
+
+  if (!canConstructOutpost(state, playerId, territoryId)) {
+    return state;
+  }
+
+  const region = state.regions.find(
+    (item) => item.id === territory.regionId
+  );
+
+  if (!region) {
+    return state;
+  }
+
+  const cost = calculateSettlementUpgradeCost(
+    "outpost",
+    calculateTotalSettlementDevelopment(
+      state.settlements
+        .filter((settlement) => settlement.ownerId === playerId)
+        .map((settlement) => settlement.level)
+    )
+  );
+
+if (!cost) {
+  return state;
+}
+
+  const inventory = region.storage[playerId];
+
+  if (
+    !inventory ||
+    inventory.timber < cost.timber ||
+    inventory.iron < cost.iron ||
+    inventory.provisions < cost.provisions ||
+    inventory.silver < cost.silver
+  ) {
+    return state;
+  }
+
+  return {
+    ...state,
+    regions: state.regions.map((item) =>
+      item.id === region.id
+        ? {
+            ...item,
+            storage: {
+              ...item.storage,
+              [playerId]: {
+                timber: inventory.timber - cost.timber,
+                iron: inventory.iron - cost.iron,
+                provisions: inventory.provisions - cost.provisions,
+                fish: inventory.fish,
+                silver: inventory.silver - cost.silver,
+              },
+            },
+          }
+        : item
+    ),
+    settlements: [
+      ...state.settlements,
+      {
+        id: settlementId,
+        ownerId: playerId,
+        territoryId,
+        level: "outpost",
+        isMainSettlement: false,
+      },
+    ],
   };
 }
