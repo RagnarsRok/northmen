@@ -55,11 +55,12 @@ return {
   armies: [],
   longboats: [],
   settlements: [],
+  recruitmentUsed: {},
   ports: [],
-settlementEventDeck: shuffleSettlementEventCards(
+  settlementEventDeck: shuffleSettlementEventCards(
   createSettlementEventCards()
 ),
 settlementEventDiscard: [],
-activeSettlementEvent: null,
-};
+    activeSettlementEvent: null,
+  };
 }

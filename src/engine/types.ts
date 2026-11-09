@@ -134,6 +134,7 @@ export interface GameState {
   armies: Army[];
   longboats: Longboat[];
   settlements: Settlement[];
+  recruitmentUsed: Record<SettlementId, number>;
   ports: Port[];
   settlementEventDeck: SettlementEventCard[];
   settlementEventDiscard: SettlementEventCard[];
