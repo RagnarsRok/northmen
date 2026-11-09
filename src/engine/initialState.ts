@@ -41,7 +41,7 @@ const players = playerNames.map((name, i) => ({
   color: colors[i],
   religion: "pagan" as const,
   victoryPoints: 0,
-  bonusCardIds: [],
+  actionCardIds: [],
   objectiveCardIds: [],
 }));
 
@@ -49,7 +49,11 @@ return {
   version: 1,
   round: 1,
   activePlayerIndex: 0,
+  remainingActions: 4,
   players,
+  actionDeck: [],
+  actionDiscard: [],
+  pendingActionCardSelection: null,
   regions: [],
   territories: [],
   armies: [],

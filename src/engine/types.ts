@@ -37,7 +37,7 @@ export interface TerritoryConnection {
 
 export type ReligionStatus = "pagan" | "christian";
 
-export type BonusCardId = string;
+export type ActionCardId = string;
 export type ObjectiveCardId = string;
 export type SettlementEventCardId = string;
 
@@ -57,8 +57,21 @@ export interface Player {
   religion: ReligionStatus;
   victoryPoints: number;
 
-  bonusCardIds: BonusCardId[];
+  actionCardIds: ActionCardId[];
   objectiveCardIds: ObjectiveCardId[];
+}
+
+// An Action Card that can be held and played by a clan.
+export interface ActionCard {
+  id: ActionCardId;
+  name: string;
+  description: string;
+}
+
+// Tracks a player who must discard Action Cards at the end of their turn.
+export interface PendingActionCardSelection {
+  playerId: PlayerId;
+  discardCount: number;
 }
 
 // A large geographical area containing multiple territories.
@@ -128,6 +141,7 @@ export interface GameState {
   version: 1;
   round: number;
   activePlayerIndex: number;
+  remainingActions: number;
   players: Player[];
   regions: Region[];
   territories: Territory[];
@@ -136,6 +150,9 @@ export interface GameState {
   settlements: Settlement[];
   recruitmentUsed: Record<SettlementId, number>;
   ports: Port[];
+  actionDeck: ActionCard[];
+  actionDiscard: ActionCard[];
+  pendingActionCardSelection: PendingActionCardSelection | null;
   settlementEventDeck: SettlementEventCard[];
   settlementEventDiscard: SettlementEventCard[];
   activeSettlementEvent: SettlementEventCard | null;

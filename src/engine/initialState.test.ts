@@ -30,16 +30,16 @@ describe("createEmptyGameState", () => {
   it("initializes cards as empty collections", () => {
     const state = createEmptyGameState(["A", "B", "C"]);
 
-    expect(state.players[0].bonusCardIds).toEqual([]);
+    expect(state.players[0].actionCardIds).toEqual([]);
     expect(state.players[0].objectiveCardIds).toEqual([]);
   });
 
   it("creates independent card collections for each player", () => {
     const state = createEmptyGameState(["A", "B", "C"]);
 
-    state.players[0].bonusCardIds.push("bonus-1");
+    state.players[0].actionCardIds.push("bonus-1");
 
-    expect(state.players[1].bonusCardIds).toEqual([]);
+    expect(state.players[1].actionCardIds).toEqual([]);
   });
 
 it("creates empty geographical, military and settlement collections", () => {
