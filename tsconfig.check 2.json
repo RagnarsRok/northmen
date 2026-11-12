@@ -1,1 +1,0 @@
-{"extends":"./tsconfig.json","compilerOptions":{"types":[],"noEmit":true},"include":["src/engine/**/*.ts","src/systems/**/*.ts","vitest-shim.d.ts"]}

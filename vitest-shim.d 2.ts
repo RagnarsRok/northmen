@@ -1,1 +1,0 @@
-declare module "vitest" { export const describe: any; export const expect: any; export const it: any; }

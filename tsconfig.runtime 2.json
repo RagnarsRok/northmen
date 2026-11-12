@@ -1,1 +1,0 @@
-{"compilerOptions":{"target":"ES2022","lib":["ES2022"],"module":"CommonJS","moduleResolution":"Node","strict":true,"skipLibCheck":true,"esModuleInterop":true,"types":[],"outDir":"/tmp/northmen-runtime","rootDir":"src","noEmit":false},"include":["src/engine/**/*.ts","src/systems/**/*.ts"],"exclude":["src/**/*.test.ts"]}
