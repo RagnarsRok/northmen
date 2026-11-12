@@ -151,20 +151,30 @@ There is one ship type: the Viking longboat. It transports warriors and their Pr
 ## 7. Combat and raiding
 
 ### Core combat
-- Standard D6.
-- Attacker rolls up to 3 warrior dice; defender up to 2.
-- 1 warrior = 1 die; 2 warriors = 2 dice; 3+ use the applicable maximum.
-- Both sides roll simultaneously; sort high to low.
+
+**Warrior dice (confirmed):**
+- Standard D6. Each warrior contributes one die, up to the applicable maximum.
+- Attacker rolls up to 3 warrior dice; defender rolls up to 2.
+- Both sides roll simultaneously; sort each side highest to lowest.
 - Compare highest against highest, then second-highest against second-highest.
-- Defender wins ties.
-- Each lost comparison causes one warrior casualty.
-- Combat continues until one army has no warriors, a player retreats between rounds, or both armies are eliminated.
-- Attacker chooses first whether to continue or retreat after each round, then defender.
-- Neither side can retreat after attack declaration but before the first round.
+- Defender wins ties. Each lost comparison causes one warrior casualty.
+- When multiple attacking armies coordinate, they form one attacking force for dice limits and combat resolution. The attacker chooses which participating army loses each attacking casualty.
+- Only the army physically present in a territory defends it; separate friendly armies in other territories do not join the defense.
 
-A defeated land army with survivors retreats to the territory from which it entered battle. Settlement defenders who survive capture retreat to a legal territory; if none exists, they are eliminated. If both armies are eliminated, territorial ownership remains unchanged.
+**Settlement defence (confirmed):**
+- A settlement contributes one separate defensive die with its level modifier: Outpost +1, Village +1, Trading Post +2, Town +3. This is not an additional warrior die and does not count against the defender's two-warrior-dice limit.
+- The settlement die is compared separately against the highest attacking warrior die. If the settlement wins the comparison, the attacking force loses one additional warrior, at most one casualty from the settlement per round.
+- A settlement and its defending army participate in the same battle. The settlement remains the final defensive element: it cannot be captured while defending warriors remain. Once all defending warriors are eliminated, the settlement continues rolling its defensive die against the highest surviving attacking warrior die. If the settlement wins, the attacker loses one warrior; if the attacker wins, the settlement is overcome.
+- A settlement has no separate health track. Even one surviving attacker can overcome it. If the final attacking warrior is eliminated first, the settlement remains with its original owner.
+- Settlement capture requires at least one attacking warrior to survive the Settlement Event Card resolution. If the event eliminates the final attacker, control does not transfer.
 
-Settlement defence adds one settlement die with the relevant modifier to the normal defender warrior dice.
+**Combat continuation and retreats (confirmed, with one timing clarification open):**
+- The attacker cannot voluntarily retreat once combat has begun. The defender cannot voluntarily retreat.
+- A defeated land army with survivors retreats to the territory from which it entered the battle. A force attacking from the sea retreats to its Longboat.
+- Coordinated attacking armies retreat together as one force.
+- If both warrior forces are eliminated, territorial ownership remains unchanged.
+- Victorious surviving attackers may continue their already-paid Military Expedition.
+- The attacker is recorded as choosing whether to continue after a round, before the defender's decision; however, the exact meaning/effect of choosing not to continue is unresolved because voluntary retreat has been ruled out.
 
 ### Raiding
 Raiding is a naval-only economic action. Targets are accessible coastal enemy settlements, Outposts and ports. Inland settlements cannot be raided directly. No friendly port is required in the target region. Own assets cannot be raided.
@@ -339,6 +349,8 @@ Rules needing clarification:
 7. Neutral asset acquisition and use.
 8. Exact longboat capacity accounting.
 9. Whether/how split armies can regroup.
+10. Meaning and consequence of the attacker choosing not to continue after a combat round, given that voluntary retreat is prohibited.
+11. Exact timing and application of settlement resistance when the defending army and settlement both roll in the same round; current implementation treats the settlement as a casualty-inflicting element during the army battle, but only allows it to be defeated after all defending warriors are gone.
 
 Values needing balancing:
 - Production bonuses; construction/upgrade/recruitment costs and capacities.
@@ -365,4 +377,4 @@ Labels:
 
 For every rule change: record the decision, check conflicts, update this specification and architecture/roadmap, and add or update tests. No unapproved recommendation may silently become a game rule.
 
-**End of Master Game Specification — Version 1.0**
+**End of Master Game Specification — Version 1.1**

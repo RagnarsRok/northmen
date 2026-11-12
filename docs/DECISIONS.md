@@ -23,6 +23,19 @@
 | D-012 | Land and sea routes are separate networks | Confirmed |
 | D-013 | D6 combat; simultaneous rolls; defender wins ties | Confirmed |
 | D-014 | Attacker maximum 3 warrior dice; defender maximum 2 | Confirmed |
+| D-028 | Combat dice are rolled simultaneously, sorted high-to-low and compared pairwise; defender wins ties | Confirmed |
+| D-029 | Settlement contributes a separate modified defensive die, compared against the highest attacker die; it can inflict at most one additional casualty per round | Confirmed |
+| D-030 | Settlement is the final defensive element and cannot be captured until all defending warriors are eliminated | Confirmed |
+| D-031 | A settlement is overcome when the attacker wins its defensive comparison after the defending army is eliminated; no separate settlement health track | Confirmed |
+| D-032 | Settlement Event resolution must leave at least one attacking warrior alive for control to transfer | Confirmed |
+| D-033 | Attacker cannot voluntarily retreat after combat begins; defender cannot voluntarily retreat | Confirmed |
+| D-034 | Defeated land army retreats to its entry territory; sea assault retreats to its Longboat | Confirmed |
+| D-035 | Only army physically present defends a territory; multiple friendly armies cannot combine in defense | Confirmed |
+| D-036 | Coordinated attacking armies form one force; attacker allocates its casualties among participating armies | Confirmed |
+| D-037 | One Provision per warrior per Military Expedition, regardless of distance | Provisional balancing value |
+| D-038 | Land Military Expedition may traverse any number of connected, legally accessible land territories; surviving force may continue after victory | Confirmed design direction |
+| D-039 | Armies may split during one expedition; each group may continue using the already-paid Provisions; a stopped group needs a new action to move again | Confirmed |
+| D-040 | Friendly armies may merge; separate armies may coordinate an attack on one territory during one expedition | Confirmed |
 | D-015 | Alliances do not automatically create war or require military assistance | Confirmed |
 | D-016 | Shared Bonus Card deck; maximum 7 regular cards | Confirmed |
 | D-017 | Initial General Event deck size: 50 | Provisional content size |
@@ -67,6 +80,8 @@
 | OPEN-013 | Endgame thresholds and exact tracker values | Open |
 | OPEN-014 | Final map, territory assignments, resource assignments and port locations | Open |
 | OPEN-015 | Final card lists and texts | Open |
+| OPEN-016 | Meaning and consequence of attacker choosing not to continue after a combat round, given that voluntary retreat is prohibited | Open |
+| OPEN-017 | Precise round timing for settlement die while defending warriors remain, beyond the confirmed separate casualty comparison and last-defender rule | Open |
 
 ## Longboat and maritime decisions
 | ID | Decision | Status |
@@ -100,6 +115,11 @@
 6. Uncovered situations use the closest existing rule; designers record a permanent clarification after the game.
 
 ## Change log
+### Version 1.1
+- Added approved Military Expedition, coordinated attack, casualty allocation, combat dice, settlement defense and retreat decisions.
+- Corrected settlement defense: settlement is the final defensive element after defending warriors are eliminated; no two-point siege track.
+- Recorded remaining combat timing clarifications as open rather than inventing behavior.
+
 ### Version 1.0
 - Consolidated design decisions from Clusters 1–16.
 - Separated confirmed decisions from provisional values and open questions.

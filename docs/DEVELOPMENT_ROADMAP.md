@@ -63,8 +63,9 @@ Build a complete but initially basic playable game, then expand to the full prod
 - Provisions calculation and land movement.
 - Passage permissions.
 - Army splitting.
-- Combat dice, terrain and settlement modifiers.
-- Retreat and capture.
+- Combat dice and settlement defense resolution implemented as a deterministic engine module; integration with army state remains.
+- Terrain modifiers remain open and are not applied by the current combat resolver.
+- Retreat, territorial capture and Settlement Event ownership integration remain to be implemented.
 - Longboat transport/capacity (maritime foundation implemented; further integration/testing remains).
 - Coastal and open-ocean routes (maritime foundation implemented; map integration remains).
 - Voyage events (deck engine implemented; catalogue and balancing remain).
