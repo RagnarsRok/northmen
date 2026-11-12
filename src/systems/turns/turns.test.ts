@@ -182,6 +182,20 @@ describe("Turn Management", () => {
     expect(result.recruitmentUsed["settlement-2"]).toBe(1);
   });
 
+
+it("prevents ending a turn while any longboat remains in open ocean", () => {
+  const state = createTestState();
+  state.remainingActions = 0;
+  state.longboats = [{
+    id: "boat-1",
+    ownerId: "player-1",
+    territoryId: "territory-1",
+    location: "at-sea",
+  }];
+
+  expect(() => endPlayerTurn(state)).toThrow(/open ocean/);
+});
+
 it("defines the seven-card hand limit", () => {
   expect(MAX_ACTION_CARDS).toBe(7);
 });

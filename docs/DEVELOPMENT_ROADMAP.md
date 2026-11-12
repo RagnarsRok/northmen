@@ -1,5 +1,11 @@
 # NORTHMEN — Development Roadmap
 
+## Current status — 12 November 2026
+- Turn and Action Card management milestone was previously secured.
+- Longboat/maritime foundation is now implemented in the domain layer: construction, crew loading/unloading, coastal movement, open-ocean voyage staging, surcharge calculations, Voyage Event deck operations/choices, anchorage validation, capture and destruction.
+- Full land movement, general combat resolution, coastal raids, map data and UI integration remain outstanding.
+- Full Vitest suite and Vite production build still need to be run in the user's normal repository environment; the uploaded archive did not have a complete installable dependency tree in this environment.
+
 ## Goal
 
 Build a complete but initially basic playable game, then expand to the full product. AI opponents, online multiplayer and asynchronous play remain product requirements. They should shape the architecture from the beginning, even if delivered in stages.
@@ -59,9 +65,9 @@ Build a complete but initially basic playable game, then expand to the full prod
 - Army splitting.
 - Combat dice, terrain and settlement modifiers.
 - Retreat and capture.
-- Longboat transport/capacity.
-- Coastal and open-ocean routes.
-- Voyage events.
+- Longboat transport/capacity (maritime foundation implemented; further integration/testing remains).
+- Coastal and open-ocean routes (maritime foundation implemented; map integration remains).
+- Voyage events (deck engine implemented; catalogue and balancing remain).
 - Coastal raids and ship capture/destruction.
 
 **Exit:** core military rules and representative edge cases have automated tests.

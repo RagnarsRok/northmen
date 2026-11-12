@@ -229,6 +229,19 @@ describe("Port capture", () => {
     expect(result.territories[0].ownerId).toBe("player-1");
   });
 
+
+  it("captures a docked longboat when the new port owner has a warrior occupying it", () => {
+    const state = createPortTestState();
+    state.ports = [{ id: "port-1", ownerId: "player-1", territoryId: "territory-1" }];
+    state.longboats = [{ id: "boat-1", ownerId: "player-1", territoryId: "territory-1", location: "at-port", portId: "port-1", homePortId: "port-1" }];
+    state.armies.push({ id: "army-2", ownerId: "player-2", territoryId: "territory-1", warriorCount: 1 });
+
+    const result = capturePort(state, "player-2", "port-1" as PortId);
+
+    expect(result.ports[0].ownerId).toBe("player-2");
+    expect(result.longboats[0].ownerId).toBe("player-2");
+  });
+
   it("does not change ownership of a settlement in the territory", () => {
     const state = createPortTestState();
 

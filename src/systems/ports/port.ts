@@ -4,6 +4,7 @@ import type {
   PlayerId,
   PortId,
 } from "../../engine/types";
+import { captureDockedLongboatByPortOccupation } from "../longboats/longboats";
 
 /**
  * Approved construction cost for a port.
@@ -166,10 +167,9 @@ export function constructPort(
 
 /**
  * Transfers ownership of a port after successful combat.
- *
- * This function does not resolve combat.
- * It only changes port ownership.
- * Territory and settlement ownership remain unchanged.
+ * This function does not resolve combat or change territory/settlement ownership.
+ * A docked longboat is also captured when the new owner has a warrior occupying
+ * the port territory, as required by the maritime rules.
  */
 export function capturePort(
   state: GameState,
@@ -184,7 +184,7 @@ export function capturePort(
     return state;
   }
 
-  return {
+  const updatedState: GameState = {
     ...state,
     ports: state.ports.map((item) =>
       item.id === portId
@@ -192,4 +192,8 @@ export function capturePort(
         : item
     ),
   };
+
+  // A docked longboat is captured only when the new owner also has a
+  // warrior occupying the port territory.
+  return captureDockedLongboatByPortOccupation(updatedState, newOwnerId, portId);
 }

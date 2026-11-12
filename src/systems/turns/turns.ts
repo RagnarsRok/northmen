@@ -4,6 +4,7 @@ import {
   drawActionCards,
   discardActionCards,
 } from "../cards/actionCards";
+import { validateLongboatsAtTurnEnd } from "../longboats/longboats";
 
 export const ACTIONS_PER_TURN = 4;
 export const MAX_ACTION_CARDS = 7;
@@ -129,6 +130,14 @@ export function endPlayerTurn(state: GameState): GameState {
 
   if (!currentPlayer) {
     throw new Error("Active player does not exist.");
+  }
+
+  if (state.pendingOceanVoyage) {
+    throw new Error("The player must resolve the pending ocean voyage before ending the turn.");
+  }
+
+  if (!validateLongboatsAtTurnEnd(state)) {
+    throw new Error("Every longboat must finish the turn at a port or coastal anchorage, not in open ocean.");
   }
 
   // Check whether the player exceeds the seven-card hand limit.

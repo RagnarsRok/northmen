@@ -161,3 +161,14 @@ This is a target organization, not a requirement to create every folder immediat
 - Per-player information filtering.
 - AI uses the same command interface as humans.
 - Online clients cannot directly mutate game state.
+
+
+## Maritime and longboat system (implementation foundation)
+- `systems/longboats/longboats.ts` owns construction, loading/unloading, boarding capture, combat-victory capture, port-occupation capture, neutralization and destruction.
+- `systems/maritime/maritimeMovement.ts` owns coastal route traversal, open-ocean pre-departure validation, normal-cost payment before event reveal, and surcharge/event resolution after reveal.
+- `systems/maritime/voyageCosts.ts` owns maximum-reserve and actual surcharge calculations.
+- `systems/maritime/voyageEvents.ts` owns Voyage Event deck operations and player-choice validation.
+- Longboat location is represented as docked at a port, anchored at a coastal territory, or transiently at sea. Turn-end validation rejects a longboat left at sea.
+- Army-to-vessel association is stored on `Army.longboatId`; the longboat remains the authoritative location for the embarked army and movement updates both territory references.
+- Base ocean surcharges and the card catalogue are data-driven/provisional.
+- Movement functions do not consume the turn action themselves; the action-command layer must call the existing `completeAction` after resolving a successful or failed action, consistent with the existing turn architecture.

@@ -60,7 +60,6 @@
 | OPEN-005 | Exact elimination effect on Crusade-related tracker | Open |
 | OPEN-006 | Definition of established presence for gathering | Open |
 | OPEN-007 | Neutral asset acquisition and interaction rules | Open |
-| OPEN-008 | Exact longboat capacity accounting | Open |
 | OPEN-009 | Whether/how split armies may regroup | Open |
 | OPEN-010 | Terrain defensive modifiers | Open |
 | OPEN-011 | Construction, upgrade, recruitment costs and capacities | Open |
@@ -68,6 +67,29 @@
 | OPEN-013 | Endgame thresholds and exact tracker values | Open |
 | OPEN-014 | Final map, territory assignments, resource assignments and port locations | Open |
 | OPEN-015 | Final card lists and texts | Open |
+
+## Longboat and maritime decisions
+| ID | Decision | Status |
+|---|---|---|
+| M-001 | Longboat construction costs 3 Timber, 1 Iron, 2 Provisions and 2 Silver | Confirmed |
+| M-002 | Construct only at an owned port; separate action; maximum one longboat per port; available immediately; no extra garrison | Confirmed |
+| M-003 | Maximum five warriors from the owner's single army per longboat; no mixed armies; army may split after disembarking | Confirmed |
+| M-004 | Loading and unloading are part of a Military Expedition action | Confirmed |
+| M-005 | Coastal movement may traverse multiple connected coastal links in one Military Expedition; normal army Provisions; no Voyage Event | Confirmed |
+| M-006 | Longboats may anchor on any coastline, including hostile coastlines/ports; cannot anchor inland or remain in open ocean between turns | Confirmed |
+| M-007 | Hostile anchorage is vulnerable to attack; victorious attacker captures boat and embarked defenders are eliminated | Confirmed |
+| M-008 | Empty/abandoned boats are defenseless; capture requires a Military Expedition action and a warrior physically boarding the vessel | Confirmed |
+| M-009 | Captured longboats immediately change owner; original home-port identity remains but does not restrict new owner | Confirmed |
+| M-010 | Capturing a port does not alone transfer a docked boat; an enemy warrior must occupy the port territory, triggering capture | Confirmed |
+| M-011 | Original owner may move a docked boat away only before the enemy occupation/capture occurs | Confirmed |
+| M-012 | Eliminated player's longboats become neutral assets, not automatically destroyed | Confirmed |
+| M-013 | Open-ocean connection draws one Voyage Event; adjustment range −5 to +5; final surcharge cannot be negative | Confirmed framework |
+| M-014 | Player must afford maximum possible surcharge before committing; actual surcharge paid after event resolution | Confirmed |
+| M-015 | Empty longboats pay no normal army Provisions but still pay ocean surcharge and draw events | Confirmed |
+| M-016 | Voyage Events may offer choices and produce resource, route, shipwreck, diversion or other consequences | Confirmed design direction; card effects provisional |
+| M-017 | Shipwreck destroys vessel and eliminates embarked warriors | Confirmed |
+| M-018 | Base ocean surcharge values by route category | Open / provisional |
+| M-019 | Final Voyage Event catalogue and card count beyond initial 20-card target | Open / provisional |
 
 ## Rule hierarchy
 1. A card explicitly overrides a core rule when it states an exception.

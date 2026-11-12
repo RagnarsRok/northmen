@@ -4,6 +4,7 @@ export type RegionId = string;
 export type TerritoryId = string;
 export type ArmyId = string;
 export type LongboatId = string;
+export type VoyageEventCardId = string;
 
 export type ResourceType =
   | "timber"
@@ -99,14 +100,25 @@ export interface Army {
   ownerId: PlayerId;
   territoryId: TerritoryId;
   warriorCount: number;
+  /** Present while this army is aboard a longboat. */
+  longboatId?: LongboatId;
 }
 
 // A clan-owned ship used to transport warriors.
+export type LongboatLocation = "at-port" | "anchored" | "at-sea";
+
 export interface Longboat {
   id: LongboatId;
-  ownerId: PlayerId;
+  /** Undefined means the vessel is neutral or abandoned. */
+  ownerId?: PlayerId;
+  /** Current coastal territory; also identifies the anchorage. */
   territoryId: TerritoryId;
-  location: "at-port" | "at-sea";
+  /** at-sea is transient and must never persist at turn end. */
+  location: LongboatLocation;
+  /** Original construction port; retained after capture. */
+  homePortId?: PortId;
+  /** Current port, only when location is at-port. */
+  portId?: PortId;
 }
 
 // Development levels for settlements.
@@ -136,6 +148,49 @@ export interface Port {
 }
 
 
+
+export type VoyageEventCategory =
+  | "favorable-conditions"
+  | "dangerous-weather"
+  | "discovery"
+  | "encounter"
+  | "tragedy"
+  | "legendary";
+
+export type VoyageEventEffect =
+  | { type: "surcharge-adjustment"; amount: number }
+  | { type: "shipwreck" }
+  | { type: "divert"; destinationTerritoryId: TerritoryId }
+  | { type: "strand"; destinationTerritoryId: TerritoryId }
+  | { type: "resource-gain"; resource: ResourceType; amount: number }
+  | { type: "no-effect" };
+
+export interface VoyageEventChoice {
+  id: string;
+  label: string;
+  effect: VoyageEventEffect;
+}
+
+export interface VoyageEventCard {
+  id: VoyageEventCardId;
+  name: string;
+  description: string;
+  category: VoyageEventCategory;
+  /** Event adjustment is limited to -5 through +5 Provisions. */
+  surchargeAdjustment?: number;
+  effect?: VoyageEventEffect;
+  choices?: VoyageEventChoice[];
+}
+
+export interface PendingOceanVoyage {
+  playerId: PlayerId;
+  longboatId: LongboatId;
+  originTerritoryId: TerritoryId;
+  destinationTerritoryId: TerritoryId;
+  normalArmyProvisionsCost: number;
+  baseSurcharges: number[];
+}
+
 // The central state of the entire game.
 export interface GameState {
   version: 1;
@@ -147,6 +202,9 @@ export interface GameState {
   territories: Territory[];
   armies: Army[];
   longboats: Longboat[];
+  voyageEventDeck?: VoyageEventCard[];
+  voyageEventDiscard?: VoyageEventCard[];
+  pendingOceanVoyage?: PendingOceanVoyage | null;
   settlements: Settlement[];
   recruitmentUsed: Record<SettlementId, number>;
   ports: Port[];
