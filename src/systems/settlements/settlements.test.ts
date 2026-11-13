@@ -298,6 +298,13 @@ describe("settlement capture", () => {
     expect(updatedState.territories[0].ownerId).toBe("player-2");
   });
 
+  it("transfers a port located in the captured settlement territory", () => {
+    const state = createUpgradeTestState();
+    state.ports = [{ id: "port-1", ownerId: "player-1", territoryId: "territory-1" }];
+    const updatedState = captureSettlement(state, "player-2", "settlement-1");
+    expect(updatedState.ports[0].ownerId).toBe("player-2");
+  });
+
   it("preserves the settlement development level", () => {
     const state = createUpgradeTestState();
     state.settlements[0].level = "trading-post";

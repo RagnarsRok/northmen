@@ -144,3 +144,24 @@ For each milestone:
 7. Update documentation when decisions or architecture change.
 
 Do not guess unresolved rules. Use clearly labelled temporary test fixtures only when necessary; do not treat them as official balance data.
+
+## Army Movement & Combat — implementation batch in progress
+
+- Added pure army operations for creation, splitting, merging, and querying armies at a territory.
+- Added land expedition setup with upfront Provisions payment at 1 Provision per warrior (provisional balancing value).
+- Added connected land-route validation, hostile army/settlement encounter detection, and group stopping.
+- Added automated tests for the new army and movement foundations.
+- Remaining in this milestone: splitting groups after expedition start, coordinated attacks from separate origins, full multi-round combat orchestration, casualty allocation by source army, retreat handling, territory/settlement capture integration, and maritime expedition integration.
+
+
+## Integrated Military Systems — batch 0.3 (implementation in progress)
+
+- Added a richer expedition model that supports armies starting from different territories and charges each origin region's resource pool for its participating warriors.
+- Added splitting and merging of active expedition groups while preserving paid Provisions and a valid withdrawal route.
+- Added coordinated attack resolution with attacker-selected casualty allocation among participating armies.
+- Added deterministic multi-round combat orchestration, between-round attacker withdrawal, coordinated withdrawal destination selection, and sea-origin withdrawal to the originating Longboat.
+- Added settlement capture finalization after a qualifying Settlement Event card is resolved; Outpost captures do not draw an event.
+- Connected embarked coastal and open-ocean movement to the existing maritime movement and Voyage Event systems.
+- Updated the confirmed combat withdrawal rule in the decision register and Master Game Specification.
+- Verification: TypeScript check passes. Vitest/build verification is pending because the uploaded archive's bundled dependencies lack the Linux Rollup optional binary in this environment. Run the full checks on the user's Mac before replacing the working project.
+- Remaining limitations: map data/connectivity is still placeholder-level; settlement event card effects remain placeholders; full UI/action orchestration, action consumption, port occupation edge cases, and multiplayer command integration are not part of this batch.

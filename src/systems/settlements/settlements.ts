@@ -442,28 +442,12 @@ export function captureSettlement(
     ),
 
     settlements: state.settlements.map((item) => {
-      // Transfer the captured settlement.
-      if (item.id === settlementId) {
-        return {
-          ...item,
-          ownerId: newOwnerId,
-          isMainSettlement: !attackerAlreadyHasMain,
-        };
-      }
-
-      // Promote the defender's chosen replacement Outpost.
-      if (
-        replacementMainSettlementId &&
-        item.id === replacementMainSettlementId
-      ) {
-        return {
-          ...item,
-          isMainSettlement: true,
-        };
-      }
-
+      if (item.id === settlementId) return { ...item, ownerId: newOwnerId, isMainSettlement: !attackerAlreadyHasMain };
+      if (replacementMainSettlementId && item.id === replacementMainSettlementId) return { ...item, isMainSettlement: true };
       return item;
     }),
+    // A port in a settlement territory transfers with the settlement.
+    ports: state.ports.map((port) => port.territoryId === territory.id && port.ownerId === previousOwnerId ? { ...port, ownerId: newOwnerId } : port),
   };
 }
 

@@ -80,7 +80,6 @@
 | OPEN-013 | Endgame thresholds and exact tracker values | Open |
 | OPEN-014 | Final map, territory assignments, resource assignments and port locations | Open |
 | OPEN-015 | Final card lists and texts | Open |
-| OPEN-016 | Meaning and consequence of attacker choosing not to continue after a combat round, given that voluntary retreat is prohibited | Open |
 | OPEN-017 | Precise round timing for settlement die while defending warriors remain, beyond the confirmed separate casualty comparison and last-defender rule | Open |
 
 ## Longboat and maritime decisions
@@ -126,3 +125,24 @@
 - Established governance labels to prevent recommendations becoming rules accidentally.
 
 Add new entries with unique IDs. Never silently overwrite a confirmed decision; record the change and rationale.
+
+## Army movement implementation decisions (November 2026)
+
+- Military Expedition Provisions cost is 1 Provision per warrior, paid once before departure; this value remains provisional for balancing.
+- Land movement may follow any number of connected land links in one expedition; there is no fixed distance limit.
+- Enemy territorial control alone does not block movement. A hostile army or hostile settlement triggers an encounter and stops that group's movement pending combat resolution.
+- Friendly armies may split and their groups may continue along separate routes using the original expedition payment. A group that stops cannot resume without a new Military Expedition action.
+- Friendly armies may merge when they share an owner and location.
+- Coordinated attacks from separate territories are resolved as one attacking force; casualties are allocated by the attacker. The combat orchestrator must preserve each contributing army's identity for casualty allocation and retreat.
+- Coordinated attackers retreat together to one territory they entered from; sea-origin attacks retreat to their Longboat.
+- Only the army physically present in a territory defends it. Settlement defense is a separate defensive die; it inflicts at most one additional attacker casualty per round. Defending warriors must be eliminated before the settlement becomes the final defensive element.
+- A settlement continues rolling its defensive die against the highest attacking die after its defending warriors are eliminated. An attacker must have at least one surviving warrior after the Settlement Event resolves to retain control.
+- After each combat round, the attacker chooses whether to continue. If the attacker stops, all surviving attackers withdraw to their entry territory; coordinated attackers withdraw together to one participating entry territory chosen by the attacker. This is the expressly approved between-round withdrawal exception to the earlier prohibition on retreat during an active combat round.
+
+## Confirmed combat withdrawal clarification (12 November 2026)
+
+- The attacker decides first after each combat round whether to continue.
+- If the attacker stops, surviving attackers retreat immediately to the territory they entered the battle from.
+- In a coordinated attack, surviving attackers retreat together to one of the participating entry territories chosen by the attacker.
+- A sea-origin attacking force retreats to its Longboat.
+- This is a between-round withdrawal rule; it does not permit retreat during an active combat round.

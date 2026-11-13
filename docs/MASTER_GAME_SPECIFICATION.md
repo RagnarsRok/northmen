@@ -378,3 +378,17 @@ Labels:
 For every rule change: record the decision, check conflicts, update this specification and architecture/roadmap, and add or update tests. No unapproved recommendation may silently become a game rule.
 
 **End of Master Game Specification — Version 1.1**
+
+## Army movement and combat implementation clarification (November 2026)
+
+A Military Expedition costs 1 Provision per participating warrior, paid once before departure (provisional balancing value). Land armies may traverse any number of connected land links. Enemy territorial ownership alone does not block movement; entering a territory containing a hostile army or hostile settlement triggers combat and stops that group's movement until combat is resolved.
+
+An army may split during an expedition; resulting groups may continue on separate routes using the original Provisions payment. A group that stops cannot resume during that turn without another Military Expedition. Friendly armies may merge when they share an owner and location. Multiple armies may coordinate an attack against one territory from separate origins; they fight as one attacking force, the attacker allocates casualties among contributing armies, and survivors retreat together to one entry territory (or to their Longboat for a sea-origin attack). Only the army physically present in a territory defends it.
+
+Combat uses up to three attacker warrior dice and two defender warrior dice. Dice are rolled simultaneously, sorted high-to-low, and compared in pairs; the defender wins ties. A settlement rolls a separate defensive die with its level modifier and compares it against the highest attacking die, inflicting at most one additional attacker casualty per round. The settlement remains an active defensive element while defending warriors remain, but it cannot be defeated until those warriors are eliminated. Thereafter it continues rolling against the surviving attacker until defeated or the attacking force is eliminated. At least one attacker must survive Settlement Event resolution to retain the captured settlement.
+
+After each combat round, the attacker chooses first whether to continue. If the attacker stops, surviving attackers withdraw immediately to the territory they entered the battle from. In a coordinated attack, the surviving force withdraws together to one participating entry territory chosen by the attacker. A sea-origin force withdraws to its Longboat. This is a specific between-round withdrawal rule and does not permit retreat during a combat round.
+
+## Combat withdrawal clarification — 12 November 2026
+
+The attacker decides first after each combat round whether to continue. Choosing to stop ends the attack and causes all surviving attackers to withdraw to their entry territory. Coordinated attackers withdraw together to one participating entry territory chosen by the attacker. A sea-origin force withdraws to its Longboat. The defender does not retreat.
